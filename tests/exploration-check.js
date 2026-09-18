@@ -77,7 +77,7 @@ async page => {
     await page.waitForTimeout(1100);
     await overviewVisible();
     const time = await page.locator('main').getAttribute('data-time');
-    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('End');
     check(await page.locator('main').getAttribute('data-time') === time, 'Boundary navigation must not desynchronize the playback clock');
   }
   await page.emulateMedia({ reducedMotion: 'no-preference' });

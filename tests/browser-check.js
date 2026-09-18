@@ -219,6 +219,8 @@ async page => {
     check(await page.locator('[data-cluster="pm"]').getAttribute('data-missed-count') === '0', 'Recovered PM specs must lose the missed-context label');
     check(await page.locator('[data-node="tech-0"]').getAttribute('data-missed') === 'true', 'The unlinked spec must remain missed');
     await page.keyboard.press('ArrowRight');
+    await page.getByRole('heading', { name: 'Connected context. Better-informed agents.' }).waitFor();
+    await page.keyboard.press('ArrowLeft');
     await stage(5);
     await page.keyboard.press('ArrowLeft');
     await stage(4);

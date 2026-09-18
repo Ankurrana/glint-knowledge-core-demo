@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import Graph from './Graph';
+import ClosingSlides, { closingSlides } from './ClosingSlides';
 import { codeResults, codeSearchCommand, graphResults, ingestionDuration, ingestionTiming, ingestionZoomOutAt, maxDepth, queryEntities, recall, relationships, retrievalCalls, retrievalHopSeconds, scenes, sources, standardResults, tourDuration, tourStops, tourTiming, traversal, userQuery, webSearchCommand } from './data';
 
 const phaseSteps = [
   ['Search space', 'Code search', 'Web search'],
   ['Ingestion', 'Graph retrieval', 'Results'],
 ];
+const presentationLength = scenes.length + closingSlides.length;
 const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
 const getMotionPreference = () => motionPreference.matches;
 // Motion's preference hook snapshots on mount; this also handles live changes.
@@ -52,7 +54,7 @@ export default function App() {
       event.preventDefault();
       if (event.repeat) return;
       const nextStage = event.key === 'Home' ? 0 : event.key === 'End' ? scenes.length - 1 :
-        Math.max(0, Math.min(scenes.length - 1, stage + (event.key === 'ArrowRight' ? 1 : -1)));
+        Math.max(0, Math.min(presentationLength - 1, stage + (event.key === 'ArrowRight' ? 1 : -1)));
       if (nextStage === stage && event.key !== 'Home') return;
       setStage(nextStage);
       if (event.key === 'Home' && stage === 0) setIngestionRun(current => current + 1);
@@ -85,15 +87,17 @@ export default function App() {
       aria-label="Glint Knowledge Core graph presentation">
       <p className="sr-only" id="presentation-instructions">
         Use the Right arrow for the next step and the Left arrow for the previous step.
-        Home restarts; End shows the final result. Press R on Search space or Ingestion to replay that animation.
+        Home restarts; End shows the graph result. Continue with Right arrow for benefits, tradeoffs, and graph images.
+        Press R on Search space or Ingestion to replay that animation.
         Press Space at any time to pause or resume all animation.
         This is a synthetic illustration, not a benchmark.
       </p>
       <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
-        Step {stage + 1} of {scenes.length}: {scenes[stage].label}.
-        {' '}{found.size} of 20 relevant sources retrieved; {recall(found)} percent recall.
+        Step {stage + 1} of {presentationLength}: {stage < scenes.length ? scenes[stage].label : closingSlides[stage - scenes.length].label}.
+        {stage < scenes.length && <> {found.size} of 20 relevant sources retrieved; {recall(found)} percent recall.</>}
         {paused ? ' Animation paused.' : ''}
       </p>
+      {stage >= scenes.length ? <ClosingSlides index={stage - scenes.length} /> : <>
       <Graph stage={stage} found={found} reducedMotion={reducedMotion} ingestionRun={ingestionRun}
         ingestionFocused={ingestionFocused} paused={paused} onTime={onTime} />
       <div className="step-label" data-testid="step-label">
@@ -157,6 +161,7 @@ export default function App() {
       <div className="playback-hint" data-testid="playback-hint">
         {paused && <strong>Paused</strong>}<kbd>Space</kbd><span>{paused ? 'resume' : 'pause'}</span>
       </div>
+      </>}
     </main>
   );
 }

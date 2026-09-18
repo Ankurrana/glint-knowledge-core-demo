@@ -273,6 +273,37 @@ html, body, #root { width: 100%; height: 100%; margin: 0; overflow: hidden; }
   border: 0;
 }
 
+.closing-slide {
+  height: 100dvh;
+  padding: clamp(24px, 4vw, 64px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 3vh, 36px);
+  color: #e5efdb;
+  background: radial-gradient(ellipse at 90% 10%, #325a40, transparent 65%), #153c32;
+  overflow-y: auto;
+}
+.closing-heading h1 { margin: 16px 0 0; font-size: clamp(28px, 3.6vw, 62px); line-height: 1.12; font-weight: 400; letter-spacing: -.035em; max-width: 1100px; }
+.closing-points { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 4vw, 70px); margin: auto 0; }
+.closing-points article { border-top: 1px solid #789c8980; padding-top: 22px; }
+.point-number { font: 14px Consolas, monospace; color: #c5dc9b; }
+.closing-points h2 { font-weight: 400; font-size: clamp(21px, 2vw, 32px); margin: 20px 0 14px; }
+.closing-points p { font-size: clamp(16px, 1.35vw, 23px); line-height: 1.65; margin: 0; color: #bdcebe; }
+.closing-takeaway { font-size: clamp(17px, 1.6vw, 25px); color: #d3e7ac; border-left: 2px solid #b9d390; padding-left: 20px; }
+.closing-navigation { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin: 0; color: #9eb6a1; font-size: 12px; }
+.graph-image { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; gap: 16px; margin: 0; }
+.graph-image img { display: block; width: 100%; flex: 1; min-height: 0; object-fit: contain; }
+.graph-image figcaption { max-width: 1050px; text-align: center; font-size: clamp(14px, 1.2vw, 20px); line-height: 1.5; color: #c8d9c1; }
+.graph-image code { color: #e8d2ac; }
+@media (max-width: 720px) {
+  .closing-points { grid-template-columns: 1fr; gap: 20px; }
+  .closing-points article { padding-top: 12px; }
+  .closing-points h2 { margin: 8px 0; }
+  .closing-points p { font-size: 15px; line-height: 1.5; }
+  .closing-heading h1 { font-size: 30px; }
+  .image-slide { gap: 20px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation: none !important;

@@ -36,6 +36,10 @@ git push origin main
 
 ## Present
 
+After the six interactive demo scenes, continue with **Right arrow** through four closing slides: **Benefits**, **Tradeoffs**, **The big picture** (supplied graph overview), and **Inside the graph** (supplied close-up). Left arrow returns to the previous slide. **End** retains its shortcut to the graph result; **Home** restarts the tour. The final image slide does not wrap. Text slides can scroll on small screens.
+
+The closing slides explain cross-source relationships, a unified MCP access point, richer retrieval context, and the engineering tradeoffs of graph quality, context budgets, and freshness. The two supplied PNGs are stored in `public/images/` and presented in order without cropping or invented node names/color meanings. These screenshots are separate from the synthetic 100-node animation; captions do not claim benchmark results.
+
 The presenter provides all commentary. **Right arrow** advances one step; **Left arrow** goes back one step. **Space** pauses or resumes at any time, freezing the exact camera position, node/edge animations, labels, progress, and retrieval sequence. The on-screen hint shows when playback is paused. Navigation and **R** start the requested scene unpaused. No click is required after the page loads. **Home** restarts the Search space tour and **End** jumps to the final result. **R** replays the tour on Search space or graph creation on Ingestion, without leaving the step. Holding a key does not skip steps or repeatedly toggle pause, and the first and last steps do not wrap. Boundary arrows leave the current playback clock untouched. The normal mouse pointer remains visible.
 
 The graph fills the browser viewport automatically. **Standard search** has three steps: Search space, Code search, and Web search. **Graph RAG** has three steps: Ingestion, Graph retrieval, and Results. The current step is underlined in the flow and numbered within its phase (for example, "STEP 02 / 03"). Use your browser's fullscreen command if you also want to hide its address bar. There is no automatic scene advance: take as long as you need to talk through each step.
@@ -81,6 +85,7 @@ playwright-cli -s=glint-demo run-code --filename=tests/pause-check.js
 playwright-cli -s=glint-demo run-code --filename=tests/retrieval-layout-check.js
 playwright-cli -s=glint-demo run-code --filename=tests/exploration-check.js
 playwright-cli -s=glint-demo run-code --filename=tests/retrieval-crash-check.js
+playwright-cli -s=glint-demo run-code --filename=tests/closing-slides-check.js
 playwright-cli -s=glint-demo close
 ```
 
