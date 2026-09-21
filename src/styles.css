@@ -291,6 +291,10 @@ html, body, #root { width: 100%; height: 100%; margin: 0; overflow: hidden; }
 .story-task text { font-size: 18px; }
 .story-task .story-small { font-size: 13px; }
 .story-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 12px; color: #526e64; }
+.solution-eyebrow { font-size: 13px; letter-spacing: .18em; }
+.solution-entity { font-size: 18px; font-weight: 600; paint-order: stroke; stroke: #e2f4ea; stroke-width: 5px; stroke-linejoin: round; }
+.solution-relationship { font-size: 14px; font-family: 'SFMono-Regular', Consolas, monospace !important; }
+.solution-match { font-size: 11px; letter-spacing: .12em; }
 @media (max-width: 720px) {
   .problem-story { padding: 20px 12px; }
   .story-footer { font-size: 10px; }

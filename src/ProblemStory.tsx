@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import usePlayback from './usePlayback';
 
 const duration = 4.8;
 const progress = (time: number, start: number, length = 1) => Math.max(0, Math.min(1, (time - start) / length));
@@ -13,32 +13,9 @@ const sources = [
 export default function ProblemStory({ paused, reducedMotion, onTime }: {
   paused: boolean; reducedMotion: boolean; onTime: (seconds: number) => void;
 }) {
-  const [elapsed, setElapsed] = useState(0);
+  const elapsed = usePlayback(duration, paused, onTime);
   // Preserve the order of the storyboard beats on a 4.8-second playback clock.
   const time = elapsed / duration * 23;
-  const clock = useRef({ time: 0, last: 0, paused });
-  useEffect(() => {
-    clock.current.paused = paused;
-    clock.current.last = performance.now();
-  }, [paused]);
-  useEffect(() => {
-    let frame = 0;
-    clock.current.last = performance.now();
-    onTime(0);
-    const tick = () => {
-      const now = performance.now();
-      const state = clock.current;
-      if (!state.paused) {
-        state.time = Math.min(duration, state.time + (now - state.last) / 1000);
-        setElapsed(state.time);
-        onTime(state.time);
-      }
-      state.last = now;
-      if (state.time < duration) frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [onTime]);
   const phase = time < 3 ? 0 : time < 10 ? 1 : time < 15 ? 2 : time < 20 ? 3 : 4;
   const labels = ['One quick task…', 'Search. Grab. Build.', 'Search. Grab. Build.', 'Oops. Missing context.', 'Oops. Missing context.'];
   const reveal = (at: number) => progress(time, at, reducedMotion ? .15 : .7);
@@ -152,7 +129,7 @@ export default function ProblemStory({ paused, reducedMotion, onTime }: {
     </svg>
     <div className="story-footer">
       <span>Illustrative scenario · not a claim about every search</span>
-      <span>{paused ? 'Paused · ' : ''}Space {paused ? 'resume' : 'pause'} · R replay · → Explore the graph</span>
+      <span>{paused ? 'Paused · ' : ''}Space {paused ? 'resume' : 'pause'} · R replay · → The solution</span>
     </div>
     <p className="sr-only" role="status" aria-live="polite">{labels[phase]}</p>
   </section>;

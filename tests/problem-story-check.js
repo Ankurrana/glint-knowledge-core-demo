@@ -61,7 +61,10 @@ async page => {
     await page.waitForFunction(() => document.querySelector('.problem-story').dataset.complete === 'true');
     check(Number(await page.locator('main').getAttribute('data-time')) === 4.8, 'Resume must finish without replaying');
     await page.keyboard.press('ArrowRight');
-    await page.waitForFunction(() => document.querySelector('main').dataset.stage === '0');
+    await page.getByTestId('solution-story').waitFor();
+    check(await page.locator('.network').count() === 0, 'Solution definition must follow the problem without a hidden graph');
+    await page.keyboard.press('ArrowRight');
+    await page.waitForFunction(() => document.querySelector('main').dataset.stage === '3');
     check(await page.locator('[data-node]').count() === 100, 'The graph must follow the story');
     check(await page.locator('.graph-canvas').evaluate(element => getComputedStyle(element).backgroundColor) === 'rgb(255, 249, 240)', 'The graph must use the same cream palette');
     await page.keyboard.press('Home');

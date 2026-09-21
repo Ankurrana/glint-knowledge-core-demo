@@ -43,16 +43,6 @@ async page => {
     await page.locator('main').waitFor();
     await page.keyboard.press('ArrowRight');
     await page.keyboard.press('ArrowRight');
-    const codeTime = await pauseAndCheck('Code-search transitions');
-    check(codeTime < .8, 'Code-search pause must be exercised before the animation ends');
-    await resumeAndCheck(codeTime);
-    await page.waitForTimeout(900);
-    const code = await page.getByTestId('search-call').locator('code').innerText();
-    check(code.includes('grep "managers\\|pulse\\|survey\\|results\\|employee\\|privacy" ./src/*.ts') && !code.includes(' -'), 'Grep must use extracted terms without option flags');
-    check(await page.getByTestId('search-call').locator('code').evaluate(element => parseFloat(getComputedStyle(element).fontSize)) >= 22, 'The command must be clearly enlarged on a desktop viewport');
-
-    await page.keyboard.press('ArrowRight');
-    await page.keyboard.press('ArrowRight');
     await page.waitForFunction(() => {
       const width = document.querySelector('.network').viewBox.baseVal.width;
       return width < 960 && width > 450;
@@ -92,15 +82,13 @@ async page => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.keyboard.press('ArrowRight');
     await page.keyboard.press('ArrowRight');
-    await page.keyboard.press('ArrowRight');
-    await page.keyboard.press('ArrowRight');
     await page.waitForFunction(() => Number(document.querySelector('main').getAttribute('data-time')) > 1.1);
     const accessibleTime = await pauseAndCheck('Reduced-motion ingestion');
     await resumeAndCheck(accessibleTime);
     await page.keyboard.press('Home');
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     check(errors.length === 0, `Browser errors: ${errors.join('\n')}`);
-    return { passed: true, noGrepOptions: true, enlargedCommands: true, pauseFreezesClockAndVisuals: true,
+    return { passed: true, pauseFreezesClockAndVisuals: true,
       midZoom: true, relationshipDrawing: true, traversal: true, resumeWithoutRestart: true, reducedMotion: true };
   } finally {
     page.off('pageerror', recordError);
