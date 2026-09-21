@@ -32,7 +32,7 @@ const clusters = groups.map(group => ({
   labelY: Math.min(...layout.filter(node => node.type === group.type).map(node => node.y)) - 70,
 }));
 const ease = [.22, 1, .36, 1] as const;
-const palette = { retrieved: '#b7efb4', missed: '#ef978a', relevant: '#c4d9a5', other: '#72988a' };
+const palette = { retrieved: '#21a88d', missed: '#c74739', relevant: '#eca83c', other: '#93b7b3' };
 const nodeDelays = new Map(groups.flatMap((group, groupIndex) =>
   layout.filter(node => node.type === group.type).map((node, index) => [
     node.id, (groupIndex * ingestionTiming.nodeClusterStagger + index * ingestionTiming.nodeStagger) / 1000,
@@ -107,7 +107,7 @@ function createSequence(stage: number, reducedMotion: boolean, camera: MotionVal
     const active = stage === 1 && group.type === 'code' || stage === 2 && group.type === 'learn';
     const missed = (stage === 2 || stage === 5) && sources.some(node =>
       node.type === group.type && node.relevant && !isRetrieved(node, stage));
-    add(`${selector} .cluster-title`, { fill: active ? '#d3edbd' : '#a8c5af' });
+    add(`${selector} .cluster-title`, { fill: active ? '#096e62' : '#365f54' });
     add(`${selector} .cluster-missed`, { opacity: missed ? 1 : 0 });
     if (stage === 0) {
       const stop = tourStops.find(stop => stop.type === group.type);
@@ -131,7 +131,7 @@ function createSequence(stage: number, reducedMotion: boolean, camera: MotionVal
       add(selector, { opacity: 0, pathLength: reducedMotion ? 1 : 0 }, 0, 0);
       add(selector, {
         pathLength: reducedMotion ? [1, 1] : [0, 1], opacity: [0, relevant ? .85 : .5],
-        stroke: relevant ? '#caedb8' : '#96bdaa', strokeWidth: 1.8,
+        stroke: relevant ? '#128674' : '#60968a', strokeWidth: 1.8,
       }, timing.delay / 1000, timing.duration / 1000);
       if (ingestionExamples.includes(edge)) {
         add(`[data-label="${edge.label}"]`, { opacity: [0, 1] }, (timing.delay + 300) / 1000, reducedMotion ? .15 : .4);
@@ -139,11 +139,11 @@ function createSequence(stage: number, reducedMotion: boolean, camera: MotionVal
     } else {
       add(selector, {
         pathLength: 1, opacity: stage < 3 ? 0 : relevant ? .4 : .18,
-        stroke: relevant ? '#76b19d' : '#55796f', strokeWidth: 1,
+        stroke: relevant ? '#378f80' : '#718f89', strokeWidth: 1,
       }, 0, stage === 4 ? 0 : normalDuration);
       if (stage >= 4 && reachable) {
         const at = stage === 4 ? Math.max(traversal.depths.get(edge.source)!, traversal.depths.get(edge.target)!) * retrievalHopSeconds : 0;
-        add(selector, { opacity: [relevant ? .4 : .18, .75], stroke: [relevant ? '#76b19d' : '#55796f', '#a3e5b0'], strokeWidth: [1, 1.8] }, at);
+        add(selector, { opacity: [relevant ? .4 : .18, .75], stroke: [relevant ? '#378f80' : '#718f89', '#07816c'], strokeWidth: [1, 1.8] }, at);
       }
     }
   });
@@ -265,10 +265,10 @@ function Graph({ stage, found, reducedMotion, ingestionRun, ingestionFocused, pa
           : '100 knowledge sources grouped into six labeled collections. Relevant sources are ringed, retrieved sources are checked, and missed context has a dashed red ring.'}
         aria-describedby="presentation-instructions">
         <defs>
-          <radialGradient id="cluster-glow"><stop offset="0" stopColor="#8cd8ab" stopOpacity=".065" /><stop offset="1" stopColor="#8cd8ab" stopOpacity="0" /></radialGradient>
+          <radialGradient id="cluster-glow"><stop offset="0" stopColor="#29aa91" stopOpacity=".065" /><stop offset="1" stopColor="#29aa91" stopOpacity="0" /></radialGradient>
           <filter id="node-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4" /></filter>
           <marker id="relationship-arrow" viewBox="0 0 10 10" refX="30" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto">
-            <path d="M 0 0 L 10 5 L 0 10 Z" fill="#d6ecba" />
+            <path d="M 0 0 L 10 5 L 0 10 Z" fill="#087466" />
           </marker>
         </defs>
         {clusters.map(group => {
@@ -277,8 +277,8 @@ function Graph({ stage, found, reducedMotion, ingestionRun, ingestionFocused, pa
           return (
             <g key={group.type} className="cluster" data-cluster={group.type} data-missed-count={missedCount}>
               <ellipse cx={group.x} cy={group.y} rx={group.type === 'code' ? 175 : 140} ry="130" fill="url(#cluster-glow)" />
-              {!reducedMotion && <circle className="ingestion-scan" cx={group.x} cy={group.y} r="110" opacity="0" fill="none" stroke="#caedb8" strokeWidth="2" />}
-              <text x={group.x} y={group.labelY} textAnchor="middle" className="cluster-title" fill="#a8c5af">{group.label}</text>
+              {!reducedMotion && <circle className="ingestion-scan" cx={group.x} cy={group.y} r="110" opacity="0" fill="none" stroke="#128674" strokeWidth="2" />}
+              <text x={group.x} y={group.labelY} textAnchor="middle" className="cluster-title" fill="#365f54">{group.label}</text>
               <text x={group.x} y={group.labelY + 16} textAnchor="middle" className="cluster-count">
                 {group.count} {group.type === 'code' ? 'files' : group.type === 'learn' || group.type === 'article' ? 'articles' : 'sources'}
               </text>
@@ -299,7 +299,7 @@ function Graph({ stage, found, reducedMotion, ingestionRun, ingestionFocused, pa
             return <path key={`${edge.source}-${edge.target}`} className={`edge ${traversed ? 'traversed' : ''}`}
               data-edge={index} data-relationship={edge.label} data-source={edge.source} data-target={edge.target}
               d={`M ${from.x} ${from.y} Q ${(from.x + to.x) / 2 + (to.y - from.y) * .12} ${(from.y + to.y) / 2 - (to.x - from.x) * .12} ${to.x} ${to.y}`}
-              fill="none" stroke="#55796f" strokeWidth="1" opacity="0"
+              fill="none" stroke="#718f89" strokeWidth="1" opacity="0"
               markerEnd={focused && ingestionExamples.includes(edge) ? 'url(#relationship-arrow)' : undefined} />;
           })}
         </g>
@@ -313,8 +313,8 @@ function Graph({ stage, found, reducedMotion, ingestionRun, ingestionFocused, pa
               {node.relevant && <circle className="node-ring" r="15" fill="none" stroke={palette.relevant} strokeWidth="1" opacity=".5" strokeDasharray={missed ? '3 3' : undefined} />}
               {!reducedMotion && <circle className="wave-ring" fill="none" stroke={palette.retrieved} r="12" opacity="0" />}
               <circle className="node-core" r={node.relevant ? 9.5 : 6} fill={node.relevant ? palette.relevant : palette.other} />
-              <path className="node-check" opacity="0" d="m-3 0 2 2 4-4" fill="none" stroke="#24473b" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              <path className="node-miss" opacity="0" d="m-2-2 4 4m0-4-4 4" fill="none" stroke="#69402d" strokeWidth="1.5" />
+              <path className="node-check" opacity="0" d="m-3 0 2 2 4-4" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path className="node-miss" opacity="0" d="m-2-2 4 4m0-4-4 4" fill="none" stroke="#ffffff" strokeWidth="1.5" />
             </g>
           );
         })}
@@ -323,9 +323,9 @@ function Graph({ stage, found, reducedMotion, ingestionRun, ingestionFocused, pa
             const node = positions.get(id)!;
             const y = view.labelY + index * 54;
             return <g key={id} data-entity-id={id}>
-              <path d={`M ${node.x + 13} ${node.y} L ${view.labelX - 10} ${y - 4}`} fill="none" stroke="#b9d6a5" strokeWidth=".7" />
-              <circle cx={node.x} cy={node.y} r="17" fill="none" stroke="#d5e9b7" strokeWidth="1" />
-              <rect x={view.labelX - 5} y={y - 18} width="205" height="33" rx="4" fill="#153c32" />
+              <path d={`M ${node.x + 13} ${node.y} L ${view.labelX - 10} ${y - 4}`} fill="none" stroke="#408a7b" strokeWidth=".7" />
+              <circle cx={node.x} cy={node.y} r="17" fill="none" stroke="#086e62" strokeWidth="1" />
+              <rect x={view.labelX - 5} y={y - 18} width="205" height="33" rx="4" fill="#fff9f0" />
               <text className="tour-entity-label" x={view.labelX} y={y}>{node.title}</text>
             </g>;
           })}
@@ -348,8 +348,8 @@ function Graph({ stage, found, reducedMotion, ingestionRun, ingestionFocused, pa
             const labelWidth = edge.label.length * 5.5 + 14;
             return (
               <g key={edge.label} className="relationship-annotation" data-label={edge.label} opacity="0">
-                {edge.label === 'requires' && <path d={`M ${anchorX} ${anchorY} L ${x} ${y}`} stroke="#bad8a9" strokeWidth=".6" fill="none" />}
-                <rect x={x - labelWidth / 2} y={y - 10} width={labelWidth} height="19" rx="4" fill="#173c32" stroke="#759d70" strokeWidth=".6" />
+                {edge.label === 'requires' && <path d={`M ${anchorX} ${anchorY} L ${x} ${y}`} stroke="#408a7b" strokeWidth=".6" fill="none" />}
+                <rect x={x - labelWidth / 2} y={y - 10} width={labelWidth} height="19" rx="4" fill="#ffffff" stroke="#549788" strokeWidth=".6" />
                 <text x={x} y={y + 3} textAnchor="middle" className="relationship-type">{edge.label}</text>
               </g>
             );

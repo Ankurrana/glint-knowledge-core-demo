@@ -36,7 +36,9 @@ git push origin main
 
 ## Present
 
-The presentation now opens with a **23-second visual problem story** before Search space: a developer requests privacy-preserving pulse survey results, an agent searches code and documentation, and labeled context fragments visibly travel from those sources into its **Agent session**. The collected pieces then feed a draft answer. The audience sees the unvisited wiki and PM spec: the answer is missing the minimum-cohort rule and displays results for only three respondents. Short labels and moving search/return signals carry the story; no narration paragraphs appear on screen. This is a curated illustration of a possible retrieval gap, not a claim that lexical or semantic search always fails.
+The presentation opens with a **4.8-second visual problem story** before Search space. Its casual sequence is "One quick task…" → "Search. Grab. Build." → "Oops. Missing context." A developer requests privacy-preserving pulse survey results, an agent searches code and documentation, and labeled context fragments travel into its **Agent session** and feed a draft answer. The unvisited PM spec reveals the missing minimum-cohort rule: results are shown for only three respondents. The final state holds for commentary until you advance. Pausing extends wall-clock time, not the 4.8-second animation timeline. This is a curated illustration of a possible retrieval gap, not a claim that lexical or semantic search always fails.
+
+The presentation uses a bright cream background, dark teal text, mint/teal retrieved context, amber relevant nodes, and coral missed-context highlights. The same light palette covers the opening, graph, search labels, closing slides, favicon, and browser theme color; the supplied graph screenshots are unchanged.
 
 **Space** pauses the story at its current frame, **R** replays it, and **Right arrow** continues to Search space at any time. **Left arrow** from Search space returns to the story; **Home** now restarts the story. Reduced-motion mode retains the reveals and sequence without traveling particles or line-drawing movement.
 

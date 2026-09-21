@@ -143,15 +143,15 @@ async page => {
       const timer = setInterval(() => {
         const color = getComputedStyle(document.querySelector('[data-node="pm-0"] .node-core')).fill;
         samples.push(color);
-        if (color === 'rgb(239, 151, 138)') clearInterval(timer);
+        if (color === 'rgb(199, 71, 57)') clearInterval(timer);
       }, 16);
       setTimeout(() => clearInterval(timer), 1800);
     });
     await page.keyboard.press('ArrowRight');
     await stage(2);
-    await page.waitForFunction(() => getComputedStyle(document.querySelector('[data-node="pm-0"] .node-core')).fill === 'rgb(239, 151, 138)');
+    await page.waitForFunction(() => getComputedStyle(document.querySelector('[data-node="pm-0"] .node-core')).fill === 'rgb(199, 71, 57)');
     const colors = await page.evaluate(() => { const samples = window.__colorSamples; delete window.__colorSamples; return samples; });
-    check(colors.some(color => color !== beforeMissedColor && color !== 'rgb(239, 151, 138)'), 'Missed nodes must interpolate smoothly rather than jump color');
+    check(colors.some(color => color !== beforeMissedColor && color !== 'rgb(199, 71, 57)'), 'Missed nodes must interpolate smoothly rather than jump color');
     await recall(70);
     await count('[data-retrieved="true"]', 14);
     await count('[data-missed="true"]', 6);
