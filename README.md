@@ -36,11 +36,15 @@ git push origin main
 
 ## Present
 
+The presentation now opens with a **23-second visual problem story** before Search space: a developer requests privacy-preserving pulse survey results, an agent searches code and documentation, and labeled context fragments visibly travel from those sources into its **Agent session**. The collected pieces then feed a draft answer. The audience sees the unvisited wiki and PM spec: the answer is missing the minimum-cohort rule and displays results for only three respondents. Short labels and moving search/return signals carry the story; no narration paragraphs appear on screen. This is a curated illustration of a possible retrieval gap, not a claim that lexical or semantic search always fails.
+
+**Space** pauses the story at its current frame, **R** replays it, and **Right arrow** continues to Search space at any time. **Left arrow** from Search space returns to the story; **Home** now restarts the story. Reduced-motion mode retains the reveals and sequence without traveling particles or line-drawing movement.
+
 After the six interactive demo scenes, continue with **Right arrow** through four closing slides: **Benefits**, **Tradeoffs**, **The big picture** (supplied graph overview), and **Inside the graph** (supplied close-up). Left arrow returns to the previous slide. **End** retains its shortcut to the graph result; **Home** restarts the tour. The final image slide does not wrap. Text slides can scroll on small screens.
 
 The closing slides explain cross-source relationships, a unified MCP access point, richer retrieval context, and the engineering tradeoffs of graph quality, context budgets, and freshness. The two supplied PNGs are stored in `public/images/` and presented in order without cropping or invented node names/color meanings. These screenshots are separate from the synthetic 100-node animation; captions do not claim benchmark results.
 
-The presenter provides all commentary. **Right arrow** advances one step; **Left arrow** goes back one step. **Space** pauses or resumes at any time, freezing the exact camera position, node/edge animations, labels, progress, and retrieval sequence. The on-screen hint shows when playback is paused. Navigation and **R** start the requested scene unpaused. No click is required after the page loads. **Home** restarts the Search space tour and **End** jumps to the final result. **R** replays the tour on Search space or graph creation on Ingestion, without leaving the step. Holding a key does not skip steps or repeatedly toggle pause, and the first and last steps do not wrap. Boundary arrows leave the current playback clock untouched. The normal mouse pointer remains visible.
+The presenter provides all commentary. **Right arrow** advances one step; **Left arrow** goes back one step. **Space** pauses or resumes at any time, freezing the exact camera position, node/edge animations, labels, progress, and retrieval sequence. The on-screen hint shows when playback is paused. Navigation and **R** start the requested scene unpaused. No click is required after the page loads. **Home** restarts the opening story and **End** jumps to the final result. **R** replays the story, the Search space tour, or graph creation on Ingestion, without leaving the step. Holding a key does not skip steps or repeatedly toggle pause, and the first and last steps do not wrap. Boundary arrows leave the current playback clock untouched. The normal mouse pointer remains visible.
 
 The graph fills the browser viewport automatically. **Standard search** has three steps: Search space, Code search, and Web search. **Graph RAG** has three steps: Ingestion, Graph retrieval, and Results. The current step is underlined in the flow and numbered within its phase (for example, "STEP 02 / 03"). Use your browser's fullscreen command if you also want to hide its address bar. There is no automatic scene advance: take as long as you need to talk through each step.
 
@@ -86,6 +90,7 @@ playwright-cli -s=glint-demo run-code --filename=tests/retrieval-layout-check.js
 playwright-cli -s=glint-demo run-code --filename=tests/exploration-check.js
 playwright-cli -s=glint-demo run-code --filename=tests/retrieval-crash-check.js
 playwright-cli -s=glint-demo run-code --filename=tests/closing-slides-check.js
+playwright-cli -s=glint-demo run-code --filename=tests/problem-story-check.js
 playwright-cli -s=glint-demo close
 ```
 

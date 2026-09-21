@@ -42,6 +42,7 @@ async page => {
     await page.goto('http://localhost:5173/');
     await page.locator('main').waitFor();
     await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowRight');
     const codeTime = await pauseAndCheck('Code-search transitions');
     check(codeTime < .8, 'Code-search pause must be exercised before the animation ends');
     await resumeAndCheck(codeTime);
@@ -89,6 +90,7 @@ async page => {
     check(await page.locator('main').getAttribute('data-paused') === 'false', 'Manual navigation must unpause the next scene');
 
     await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.keyboard.press('ArrowRight');
     await page.keyboard.press('ArrowRight');
     await page.keyboard.press('ArrowRight');
     await page.keyboard.press('ArrowRight');

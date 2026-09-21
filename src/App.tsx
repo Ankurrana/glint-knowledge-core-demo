@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import Graph from './Graph';
+import ProblemStory from './ProblemStory';
 import ClosingSlides, { closingSlides } from './ClosingSlides';
 import { codeResults, codeSearchCommand, graphResults, ingestionDuration, ingestionTiming, ingestionZoomOutAt, maxDepth, queryEntities, recall, relationships, retrievalCalls, retrievalHopSeconds, scenes, sources, standardResults, tourDuration, tourStops, tourTiming, traversal, userQuery, webSearchCommand } from './data';
 
@@ -17,7 +18,7 @@ function subscribeToMotionPreference(onChange: () => void) {
 }
 
 export default function App() {
-  const [stage, setStage] = useState(0);
+  const [stage, setStage] = useState(-1);
   const [ingestionRun, setIngestionRun] = useState(0);
   const [elapsed, setElapsed] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -41,7 +42,7 @@ export default function App() {
         if (!event.repeat) setPaused(current => !current);
         return;
       }
-      if (event.key.toLowerCase() === 'r' && (stage === 0 || stage === 3)) {
+      if (event.key.toLowerCase() === 'r' && (stage === -1 || stage === 0 || stage === 3)) {
         event.preventDefault();
         if (!event.repeat) {
           setElapsed(0);
@@ -53,11 +54,11 @@ export default function App() {
       if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
       event.preventDefault();
       if (event.repeat) return;
-      const nextStage = event.key === 'Home' ? 0 : event.key === 'End' ? scenes.length - 1 :
-        Math.max(0, Math.min(presentationLength - 1, stage + (event.key === 'ArrowRight' ? 1 : -1)));
+      const nextStage = event.key === 'Home' ? -1 : event.key === 'End' ? scenes.length - 1 :
+        Math.max(-1, Math.min(presentationLength - 1, stage + (event.key === 'ArrowRight' ? 1 : -1)));
       if (nextStage === stage && event.key !== 'Home') return;
       setStage(nextStage);
-      if (event.key === 'Home' && stage === 0) setIngestionRun(current => current + 1);
+      if (event.key === 'Home' && stage === -1) setIngestionRun(current => current + 1);
       setElapsed(0);
       setPaused(false);
     };
@@ -87,17 +88,18 @@ export default function App() {
       aria-label="Glint Knowledge Core graph presentation">
       <p className="sr-only" id="presentation-instructions">
         Use the Right arrow for the next step and the Left arrow for the previous step.
-        Home restarts; End shows the graph result. Continue with Right arrow for benefits, tradeoffs, and graph images.
-        Press R on Search space or Ingestion to replay that animation.
+        Home restarts the opening story; End shows the graph result. Continue with Right arrow for benefits, tradeoffs, and graph images.
+        Press R on the opening story, Search space, or Ingestion to replay that animation.
         Press Space at any time to pause or resume all animation.
         This is a synthetic illustration, not a benchmark.
       </p>
       <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
-        Step {stage + 1} of {presentationLength}: {stage < scenes.length ? scenes[stage].label : closingSlides[stage - scenes.length].label}.
-        {stage < scenes.length && <> {found.size} of 20 relevant sources retrieved; {recall(found)} percent recall.</>}
+        Step {stage + 2} of {presentationLength + 1}: {stage === -1 ? 'The context problem' : stage < scenes.length ? scenes[stage].label : closingSlides[stage - scenes.length].label}.
+        {stage >= 0 && stage < scenes.length && <> {found.size} of 20 relevant sources retrieved; {recall(found)} percent recall.</>}
         {paused ? ' Animation paused.' : ''}
       </p>
-      {stage >= scenes.length ? <ClosingSlides index={stage - scenes.length} /> : <>
+      {stage === -1 ? <ProblemStory key={ingestionRun} paused={paused} reducedMotion={reducedMotion} onTime={onTime} /> :
+        stage >= scenes.length ? <ClosingSlides index={stage - scenes.length} /> : <>
       <Graph stage={stage} found={found} reducedMotion={reducedMotion} ingestionRun={ingestionRun}
         ingestionFocused={ingestionFocused} paused={paused} onTime={onTime} />
       <div className="step-label" data-testid="step-label">

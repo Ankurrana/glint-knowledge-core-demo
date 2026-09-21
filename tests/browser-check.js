@@ -117,6 +117,8 @@ async page => {
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto('http://localhost:5173/');
+    await page.locator('main').waitFor();
+    await page.keyboard.press('ArrowRight');
     await page.locator('[data-node]').first().waitFor();
     await page.keyboard.press('Space');
     await viewportOnly();
@@ -126,6 +128,8 @@ async page => {
     await stage(0);
     await recall(0);
     await page.keyboard.press('ArrowLeft');
+    await page.waitForFunction(() => document.querySelector('main')?.dataset.stage === '-1');
+    await page.keyboard.press('ArrowRight');
     await stage(0);
     await page.keyboard.press('ArrowRight');
     await stage(1);
@@ -239,6 +243,7 @@ async page => {
     await count('[data-retrieved="true"]', 1);
     await recall(95);
     await page.keyboard.press('Home');
+    await page.keyboard.press('ArrowRight');
     await stage(0);
     await page.waitForFunction(() => Number(getComputedStyle(document.querySelector('.relationships')).opacity) === 0);
     await page.keyboard.down('ArrowRight');
@@ -258,6 +263,7 @@ async page => {
     await viewportOnly();
     await count('[data-node]', 100);
     await page.keyboard.press('Home');
+    await page.keyboard.press('ArrowRight');
     await page.keyboard.press('ArrowRight');
     await page.keyboard.press('ArrowRight');
     await recall(70);
@@ -283,6 +289,7 @@ async page => {
       await page.setViewportSize(size);
       await page.keyboard.press('Home');
       await page.keyboard.press('ArrowRight');
+      await page.keyboard.press('ArrowRight');
       await searchCall('code');
       await viewportOnly();
       await page.keyboard.press('ArrowRight');
@@ -292,6 +299,7 @@ async page => {
     await page.setViewportSize({ width: 1920, height: 1080 });
     await viewportOnly();
     await page.keyboard.press('Home');
+    await page.keyboard.press('ArrowRight');
     await stage(0);
     await recall(0);
     check(errors.length === 0, `Browser errors: ${errors.join('\n')}`);

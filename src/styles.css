@@ -273,6 +273,28 @@ html, body, #root { width: 100%; height: 100%; margin: 0; overflow: hidden; }
   border: 0;
 }
 
+.problem-story {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(20px, 3.4vw, 52px);
+  color: #e5efdb;
+  background: radial-gradient(ellipse at 55% 50%, #2a513f, transparent 75%), #153c32;
+}
+.story-heading h1 { margin: 12px 0 0; font-size: clamp(25px, 3vw, 48px); font-weight: 400; letter-spacing: -.03em; }
+.story-canvas { width: 100%; flex: 1; min-height: 0; overflow: hidden; }
+.story-canvas text { font-family: 'Avenir Next', 'Trebuchet MS', sans-serif; }
+.story-canvas text:not([fill]) { fill: #e5efdb; }
+.story-canvas .story-small { font-size: 13px; fill: #b2c9ac; }
+.story-task rect { fill: #234c3e; stroke: #8ca881; }
+.story-task text { font-size: 18px; }
+.story-task .story-small { font-size: 13px; }
+.story-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 12px; color: #a8bfa4; }
+@media (max-width: 720px) {
+  .problem-story { padding: 20px 12px; }
+  .story-footer { font-size: 10px; }
+}
+
 .closing-slide {
   height: 100dvh;
   padding: clamp(24px, 4vw, 64px);

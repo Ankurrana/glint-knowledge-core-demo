@@ -23,6 +23,7 @@ async page => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('http://localhost:5173');
   await page.locator('main').waitFor();
+  await page.keyboard.press('ArrowRight');
   await page.evaluate(() => {
     const visits = {};
     window.__tourVisits = visits;
